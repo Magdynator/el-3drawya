@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\UserProfile;
+
+class userController extends Controller
+{
+    public function portfolio($qrcode) {
+        $portfolio = UserProfile::where("qrcode", $qrcode)->first();   
+        return view('website/portfolio', compact('portfolio'));
+    }    
+    public function scanBarcode(Request $req) {
+        $barcode = $req->input('barcode');
+        $user = UserProfile::where('barcode', $barcode )-> first();
+        if (!$user){
+            return response()->jason(['message'=> 'User not found']);
+        }
+        $user-> point += 10 ;
+        $user-> save();
+        return response()->jason(['message'=> 'Points added succssefully' , 'user' => $user-> first_name]);
+    } 
+}

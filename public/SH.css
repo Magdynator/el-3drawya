@@ -1,0 +1,63 @@
+/* General Table Styling */
+.table-container {
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    background-color: #4CAF50;
+    color: white;
+}
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+}
+th {
+    cursor: pointer;
+    position: relative;
+}
+th::after {
+    content: '▼';
+    font-size: 0.7em;
+    position: absolute;
+    right: 10px;
+    display: none;
+}
+th.sorted-asc::after {
+    display: inline;
+    content: '▲';
+}
+th.sorted-desc::after {
+    display: inline;
+    content: '▼';
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+/* Responsive Design */
+@media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    th, td {
+        padding: 10px;
+        text-align: right;
+        position: relative;
+    }
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        position: absolute;
+        left: 10px;
+        text-align: left;
+    }
+}

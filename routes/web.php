@@ -1,0 +1,30 @@
+<?php
+use App\Models\UserProfile;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ATMController;
+use App\Http\Controllers\loginController;
+use App\Http\Controllers\logoutController;
+use App\Http\Controllers\userController;
+use App\Http\Controllers\adminController;
+use App\Http\Middleware\AuthCheck;
+use App\Http\Middleware\AlreadyLoggedin;
+use App\Http\Middleware\checkAdminLogin;
+
+Route::get('/portfolio/{qrcode}', [userController::class, 'portfolio'])->name('portfolio.show');
+Route::get('/', [ATMController::class, 'showLoginPage'])->middleware(AlreadyLoggedin::class);
+Route::post('/login', [loginController::class, 'user']);
+Route::get('/dashboard', [ATMController::class, 'showDashboard'])->middleware(AuthCheck::class);
+Route::post('/logout', [logoutController::class, 'logout'])->middleware('auth');
+Route::get('/withdraw', [ATMController::class, 'showWithdraw'])->middleware(AuthCheck::class);
+Route::post('/Withdrawn', [ATMController::class, 'withdrawn']);
+Route::get('/Deposit', [ATMController::class, 'showDeposit'])->middleware(AuthCheck::class);
+Route::post('/Deposited', [ATMController::class, 'deposited']);
+Route::get('/transaction', [ATMController::class, 'viewHistory'])->middleware(AuthCheck::class);
+Route::get('/admin', [adminController::class, 'adminlogin'])->middleware(checkAdminLogin::class);
+Route::post('/adminlog', [loginController::class, 'admin']);
+Route::get('/admindashboard', [adminController::class, 'showAdminDashboard']);
+Route::get('/adminlogout', [logoutController::class, 'logout']);
+Route::get('/users', [adminController::class, 'users']);
+Route::post('/scan-barcode', [userController::class, 'scanBarcode']);
+Route::get('/addUser', [adminController::class, 'addUser']);
+Route::post('/reg', [adminController::class, 'reg']);
