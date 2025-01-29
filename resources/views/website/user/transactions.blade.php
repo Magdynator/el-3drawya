@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ATM Web Interface</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
     table {
         width: 100%;
@@ -49,24 +49,24 @@
             @php
             $i = 1;
             @endphp
+            @if($transactions)
             @foreach($transactions as $index => $transaction)
             <tbody>
                 <tr>
-                    @if($transaction-> user_id == Auth::user()->id)
+                    
 
                     <td>{{ $i }} </td>
-                    <td>{{ $transaction-> point}}</td>
-                    <td>{{ $transaction-> inOrOut}}</td>
-                    <td>from {{ $transaction-> created_at->diffForHumans()}}</td>
+                    <td>{{ $transaction['amount']}}</td>
+                    <td>{{ $transaction['type']}}</td>
+                    <td>from {{ $transaction['timestamp_human']}}</td>
                     @php
                     $i++;
                     @endphp
-                    @endif
                 </tr>
             </tbody>
 
             @endforeach
-
+            @endif
         </table>
         </br>
         <form action="dashboard">
@@ -77,7 +77,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="javascript/script.js"></script>
 </body>
 
 </html>

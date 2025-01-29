@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="all.min.css">
-    <link rel="stylesheet" href="SH.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/SH.css">
 
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="media.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/media.css">
 </head>
 
 <body>
@@ -51,9 +51,9 @@
     </nav>
 @yield('content')
 
-<script src="bootstrap.bundle.min.js"></script>
+<script src="javascript/bootstrap.bundle.min.js"></script>
 
-<script src="dashboard.js"></script>
+<script src="javascript/dashboard.js"></script>
 </body>
 
 </html>

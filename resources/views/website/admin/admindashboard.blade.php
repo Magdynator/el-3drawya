@@ -41,19 +41,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
-                        @php
-                        $birthDate = \Carbon\Carbon::parse($user-> date_of_birth);
-
-                        @endphp
+                        @foreach($preparedTransactions as $user)
+                        
                         <tr>
-                            <td>{{$user -> personal_id}}</td>
-                            <td>{{$user -> first_name}}</td>
-                            <td>{{$user -> last_name}}</td>
-                            <td>{{$user -> point}}</td>
-                            <td>{{$birthDate ->age}}</td>
-                            <td>{{$user -> phone_number}}</td>
-                            <td>{{$user -> address}}</td>
+                            <td>{{$user['personal_id']}}</td>
+                            <td>{{$user['first_name']}}</td>
+                            <td>{{$user['last_name']}}</td>
+                            <td>{{$user['point']}}</td>
+                            <td>{{$user['age']}}</td>
+                            <td>{{$user['phone_number']}}</td>
+                            <td>{{$user['address']}}</td>
 
 
                         </tr>

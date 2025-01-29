@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class AuthCheck
 {
@@ -16,7 +17,7 @@ class AuthCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!auth()->check()){
+        if(!Session::has("loginId")){
             return redirect('/')->with('fail','You have to login first');
         }
         return $next($request);

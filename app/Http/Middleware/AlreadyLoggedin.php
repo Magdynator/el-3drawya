@@ -18,7 +18,7 @@ class AlreadyLoggedin
     
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check()){
+        if (Session::has("loginId")){
            return redirect()->to('/dashboard');
         }
         return $next($request);

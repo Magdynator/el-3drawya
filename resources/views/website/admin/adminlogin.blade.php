@@ -89,6 +89,7 @@
         <h2>Welcome to your website</h2>
         <form action="adminlog" method="post">
             @csrf
+            
             <input type="password" name="pin" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>

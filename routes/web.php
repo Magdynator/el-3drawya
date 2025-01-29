@@ -10,11 +10,11 @@ use App\Http\Middleware\AuthCheck;
 use App\Http\Middleware\AlreadyLoggedin;
 use App\Http\Middleware\checkAdminLogin;
 
-Route::get('/portfolio/{qrcode}', [userController::class, 'portfolio'])->name('portfolio.show');
+Route::get('/portfolio/{gender}/{pin}', [userController::class, 'portfolio'])->name('portfolio.show');
 Route::get('/', [ATMController::class, 'showLoginPage'])->middleware(AlreadyLoggedin::class);
 Route::post('/login', [loginController::class, 'user']);
 Route::get('/dashboard', [ATMController::class, 'showDashboard'])->middleware(AuthCheck::class);
-Route::post('/logout', [logoutController::class, 'logout'])->middleware('auth');
+Route::post('/logout', [logoutController::class, 'logout']);
 Route::get('/withdraw', [ATMController::class, 'showWithdraw'])->middleware(AuthCheck::class);
 Route::post('/Withdrawn', [ATMController::class, 'withdrawn']);
 Route::get('/Deposit', [ATMController::class, 'showDeposit'])->middleware(AuthCheck::class);

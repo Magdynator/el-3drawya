@@ -1,6 +1,6 @@
 @extends('website.template.master')
 @section('content')
-<link rel="stylesheet" href="userstyles.css">
+<link rel="stylesheet" href="css/userstyles.css">
 <!-- Main Dashboard Content -->
 <div class="regcontainer">
     <h1>Register</h1>
@@ -60,6 +60,6 @@
     </form>
     <p id="formFeedback"></p>
 </div>
-<script src="script.js"></script>
+<script src="javascript/script.js"></script>
 
 @endsection()

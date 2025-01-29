@@ -8,6 +8,9 @@ use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Kreait\Firebase\Contract\Database;
+use Session;
+use Carbon\Carbon;
+
 
 class adminController extends Controller
 {
@@ -17,26 +20,45 @@ class adminController extends Controller
     }
     public function adminlogin()
     {
-        return view('website/adminlogin');
+        return view('website/admin/adminlogin');
     }
     public function showAdminDashboard()
     {
-        $gender = UserProfile::where("user_id", Auth::user()->id)->first();
-        $count = UserProfile::where('gender', $gender->gender)->count();
-        $transactionHistory = TransactionHistory::all()->count();
-        $users = UserProfile::where('gender', $gender->gender)->get();
-        $adminName = $gender->first_name;
-        return view('website/admindashboard', compact('count', 'users', 'adminName', 'transactionHistory'));
+        $input = Session::get('adminId');
+        $gender = Session::get('gender');
+        $data = $this->database->getReference("admin/{$gender}/{$input}")->getValue();
+        if ($data) {
+            $male = $this->database->getReference("users/{$gender}/")->getValue();
+            $count = count($male);
+            $transactionHistory = $this->database->getReference("transactionHistory/total")->getValue();
+        
+        $users = $this->database->getReference("users/{$gender}")->getValue();
+        $preparedTransactions = [];
+        foreach ($users as $key => $user) {
+            $user['age'] = isset($user['date_of_birth'])
+                ? Carbon::parse($user['date_of_birth'])->age
+                : 'N/A';
+            $preparedTransactions[$key] = $user;
+        }
+        $adminName = $data['first_name'];
+        return view('website/admin/admindashboard', compact('count', 'preparedTransactions', 'adminName', 'transactionHistory'));
+    } else if ($data == null){
+        $count = 0;
+        $transactionHistory  = 0;
+        $adminName = 'Guest';
+        $preparedTransactions = [];
+        return view('website/admin/admindashboard', compact('count', 'preparedTransactions', 'adminName', 'transactionHistory'));
     }
+}
     public function users()
     {
-        $gender = UserProfile::where("user_id", Auth::user()->id)->first();
-        $users = UserProfile::where('gender', $gender->gender)->get();
-        return view('website/adminsearchpage', compact('users'));
+        $gender = Session::get('gender');
+        $users = $this->database->getReference("users/{$gender}/")->getValue();
+        return view('website/admin/adminsearchpage', compact('users'));
     }
     public function addUser()
     {
-        return view('website/addUser');
+        return view('website/admin/addUser');
     }
     public function reg(Request $req)
     {
@@ -63,10 +85,16 @@ class adminController extends Controller
             'phone_number' => $req->Phonenumber,
             'address' => $req->address,
         ];
-        if ($req->gender == 'male') {
+        if ($req->gender == 'male' && $req->role == 'admin') {
+            $postRef = $this->database->getReference('admin/male/' . $req->pin);
+            $postRef->set($postData);
+        } else if($req->gender == 'male' && $req->role == 'user') {
             $postRef = $this->database->getReference('users/male/' . $req->pin);
             $postRef->set($postData);
-        } else {
+        } if ($req->gender == 'female' && $req->role == 'admin'){
+            $postRef = $this->database->getReference('admin/female/' . $req->pin);
+            $postRef->set($postData);
+        } else if($req->gender == 'female' && $req->role == 'user'){
             $postRef = $this->database->getReference('users/female/' . $req->pin);
             $postRef->set($postData);
         }

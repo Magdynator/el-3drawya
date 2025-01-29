@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
+use Kreait\Firebase\Contract\Database;
 
 class userController extends Controller
 {
-    public function portfolio($qrcode) {
-        $portfolio = UserProfile::where("qrcode", $qrcode)->first();   
-        return view('website/portfolio', compact('portfolio'));
+    public function __construct(Database $database)
+    {
+        $this->database = $database;
+    }
+    public function portfolio($gender, $pin)
+    {
+        $portfolio = $this->database->getReference("users/{$gender}/{$pin}")->getValue();   
+        return view('website/user/portfolio', compact('portfolio'));
     }    
     public function scanBarcode(Request $req) {
         $barcode = $req->input('barcode');

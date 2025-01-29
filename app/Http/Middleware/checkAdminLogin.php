@@ -19,6 +19,7 @@ class checkAdminLogin
         if (Session::has("adminId")){
             return redirect()->to('/admindashboard');
          }
+         
         return $next($request);
     }
 }
